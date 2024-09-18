@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "683986646240",
+    "project_id": "hotelease-e35c1",
+    "storage_bucket": "hotelease-e35c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683986646240:android:a69a797a13f50799784c85",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBTboXeZE2gV6S_e7aUfKAx56hue_XmKg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
