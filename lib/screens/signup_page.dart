@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Firebase import
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -8,47 +9,82 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  bool _termsAccepted = false;
+
+  Future<void> _signUp() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
+      );
+      return;
+    }
+
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      print('Signup successful: ${userCredential.user?.email}');
+
+      // Navigate to CustomerHomePage after successful signup
+      Navigator.pushReplacementNamed(context, '/customer_home');
+    } on FirebaseAuthException catch (e) {
+      String message;
+      if (e.code == 'email-already-in-use') {
+        message = 'The email is already registered.';
+      } else {
+        message = e.message ?? 'An unknown error occurred';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), // Arrow icon
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacementNamed(
-                context, '/custlogin'); // Navigate back to CustLoginScreen
+            Navigator.pushReplacementNamed(context, '/custlogin');
           },
         ),
         title: const Text('Sign Up'),
-        backgroundColor: Colors.brown, // Set AppBar background color
+        backgroundColor: Colors.brown,
       ),
       body: Stack(
         children: [
-          // Background Image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/emp.jpeg'), // Background image
+                image: AssetImage('assets/emp.jpeg'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          // Signup Form
           Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                  color: Colors.brown.shade100.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(16.0),
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(12.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 8.0,
+                      offset: const Offset(2, 2),
+                    ),
+                  ],
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -61,100 +97,30 @@ class _SignupPageState extends State<SignupPage> {
                         color: Colors.brown,
                       ),
                     ),
-                    const SizedBox(height: 8.0),
-                    const Text(
-                      "Join Us and Enhance Your Career!",
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: Colors.brown,
-                      ),
+                    const SizedBox(height: 16.0),
+                    TextField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(labelText: 'Email'),
                     ),
                     const SizedBox(height: 16.0),
                     TextField(
                       controller: _usernameController,
-                      decoration: const InputDecoration(
-                        labelText: 'USERNAME',
-                        labelStyle: TextStyle(color: Colors.brown),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'EMAIL',
-                        labelStyle: TextStyle(color: Colors.brown),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
+                      decoration: const InputDecoration(labelText: 'Username'),
                     ),
                     const SizedBox(height: 16.0),
                     TextField(
                       controller: _passwordController,
                       obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'PASSWORD',
-                        labelStyle: TextStyle(color: Colors.brown),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
+                      decoration: const InputDecoration(labelText: 'Password'),
                     ),
                     const SizedBox(height: 16.0),
                     TextField(
                       controller: _confirmPasswordController,
                       obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'CONFIRM PASSWORD',
-                        labelStyle: TextStyle(color: Colors.brown),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
+                      decoration:
+                          const InputDecoration(labelText: 'Confirm Password'),
                     ),
                     const SizedBox(height: 16.0),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: _termsAccepted,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _termsAccepted = value ?? false;
-                            });
-                          },
-                        ),
-                        const Expanded(
-                          child: Text(
-                            'I accept the terms and conditions',
-                            style: TextStyle(color: Colors.brown),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24.0),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.brown,
@@ -164,12 +130,7 @@ class _SignupPageState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      onPressed: () {
-                        // Handle sign-up logic
-                        print('Email: ${_emailController.text}');
-                        print('Username: ${_usernameController.text}');
-                        print('Password: ${_passwordController.text}');
-                      },
+                      onPressed: _signUp,
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(color: Colors.white),
@@ -177,20 +138,15 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     const SizedBox(height: 16.0),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "Already have an account?",
-                          style: TextStyle(color: Colors.brown),
-                        ),
                         TextButton(
                           onPressed: () {
-                            // Navigate to the Customer Login Page
                             Navigator.pushReplacementNamed(
                                 context, '/custlogin');
                           },
                           child: const Text(
-                            'Log In',
+                            'Login',
                             style: TextStyle(color: Colors.brown),
                           ),
                         ),
@@ -206,202 +162,3 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
-
-
-/*import 'package:flutter/material.dart';
-
-class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
-
-  @override
-  _SignupPageState createState() => _SignupPageState();
-}
-
-class _SignupPageState extends State<SignupPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  bool _termsAccepted = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/emp.jpeg'), // Background image
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          // Signup Form
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.brown.shade100.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.brown,
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    const Text(
-                      "Join Us and Enhance Your Career!",
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: Colors.brown,
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextField(
-                      controller: _usernameController,
-                      decoration: const InputDecoration(
-                        labelText: 'USERNAME',
-                        labelStyle: TextStyle(color: Colors.brown),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'EMAIL',
-                        labelStyle: TextStyle(color: Colors.brown),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'PASSWORD',
-                        labelStyle: TextStyle(color: Colors.brown),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextField(
-                      controller: _confirmPasswordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'CONFIRM PASSWORD',
-                        labelStyle: TextStyle(color: Colors.brown),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: _termsAccepted,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _termsAccepted = value ?? false;
-                            });
-                          },
-                        ),
-                        const Expanded(
-                          child: Text(
-                            'I accept the terms and conditions',
-                            style: TextStyle(color: Colors.brown),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24.0),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.brown,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                      onPressed: () {
-                        // Handle sign-up logic
-                        print('Email: ${_emailController.text}');
-                        print('Username: ${_usernameController.text}');
-                        print('Password: ${_passwordController.text}');
-                      },
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Already have an account?",
-                          style: TextStyle(color: Colors.brown),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // Navigate to the login page
-                            Navigator.pushNamed(context, '/login');
-                          },
-                          child: const Text(
-                            'Log In',
-                            style: TextStyle(color: Colors.brown),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-*/

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Firebase import
 
 class CustLoginScreen extends StatefulWidget {
   const CustLoginScreen({super.key});
@@ -13,15 +13,14 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>(); // Key to validate the form
-  bool _isLoading = false; // For showing a loading indicator during login
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   Future<void> _login() async {
-    if (!_formKey.currentState!.validate())
-      return; // If the form is invalid, return
+    if (!_formKey.currentState!.validate()) return;
 
     setState(() {
-      _isLoading = true; // Show loading indicator
+      _isLoading = true;
     });
 
     try {
@@ -30,7 +29,9 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
         password: _passwordController.text,
       );
       print('Login successful: ${userCredential.user?.email}');
-      // Navigate to home or dashboard screen
+
+      // Navigate to CustomerHomePage after successful login
+      Navigator.pushReplacementNamed(context, '/customer_home');
     } on FirebaseAuthException catch (e) {
       String message;
       if (e.code == 'user-not-found') {
@@ -40,13 +41,12 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
       } else {
         message = e.message ?? 'An unknown error occurred';
       }
-      // Show error to the user
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(message),
       ));
     } finally {
       setState(() {
-        _isLoading = false; // Hide loading indicator
+        _isLoading = false;
       });
     }
   }
@@ -60,7 +60,6 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
       ),
       body: Stack(
         children: [
-          // Background Image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -69,7 +68,6 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
               ),
             ),
           ),
-          // Login Form
           Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -87,7 +85,7 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
                   ],
                 ),
                 child: Form(
-                  key: _formKey, // Associate the form key
+                  key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -117,7 +115,6 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your email';
                           }
-                          // Check if the email is valid
                           if (!RegExp(
                                   r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
                               .hasMatch(value)) {
@@ -175,7 +172,6 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              // Navigate to the Reset Password Screen
                               Navigator.pushNamed(context, '/resetpass');
                             },
                             child: const Text(
@@ -185,7 +181,6 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
                           ),
                           TextButton(
                             onPressed: () {
-                              // Navigate to the Signup Page
                               Navigator.pushReplacementNamed(
                                   context, '/signup');
                             },

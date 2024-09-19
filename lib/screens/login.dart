@@ -149,26 +149,35 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 40.0),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                decoration: BoxDecoration(
-                  color: Colors.brown,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 8.0),
-                    Text(
-                      'Login as a Guest',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context,
+                      '/customer_home'); // Navigate to customer_home_page.dart
+                },
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                  decoration: BoxDecoration(
+                    color: Colors.brown,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 8.0),
+                      Text(
+                        'Login as a Guest',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 30.0),

@@ -6,6 +6,7 @@ import 'screens/employee_login_page.dart'; // Employee Login Page
 import 'screens/signup_page.dart'; // Signup Page
 import 'screens/home_page.dart'; // Home Page
 import 'screens/resetpass.dart'; // Reset Password Page
+import 'screens/customer_home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignupPage(), // Signup Page
         '/resetpass': (context) =>
             const ResetPassScreen(), // Reset Password Page
+        '/customer_home': (context) => const CustomerHomePage()
       },
     );
   }
