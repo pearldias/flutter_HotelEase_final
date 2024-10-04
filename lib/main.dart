@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'screens/splash_page.dart';
 import 'screens/login.dart';
+import 'screens/menu.dart'; // Import for MenuScreen
+import 'screens/customer.dart'; // Import for CustomerScreen
+import 'screens/booking.dart'; // Import for BookingAndPaymentScreen
+import 'screens/feedback.dart'; // Import for FeedbackScreen
+import 'screens/user.dart';
 import 'screens/custlogin.dart';
 import 'screens/employee_login_page.dart'; // Employee Login Page
 import 'screens/signup_page.dart'; // Signup Page
 import 'screens/home_page.dart'; // Home Page
 import 'screens/resetpass.dart'; // Reset Password Page
-import 'screens/customer_home_page.dart';
+import 'screens/customer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:app/screens/success.dart';  // If success.dart is located in screens
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +47,12 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignupPage(), // Signup Page
         '/resetpass': (context) =>
             const ResetPassScreen(), // Reset Password Page
-        '/customer_home': (context) => const CustomerHomePage()
+        '/customer_home': (context) => const CustomerScreen(),
+        '/menu': (context) => MenuScreen(),
+        '/bookingAndPayment': (context) => BookingForm(),
+        '/feedback': (context) => FeedbackScreen(),
+        '/user': (context) => UserProfile(),
+        '/success': (context) => SuccessScreen(), // SuccessScreen route
       },
     );
   }
