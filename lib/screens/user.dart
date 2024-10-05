@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'resetpass.dart'; // Import the ResetPassScreen class
+
 class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,7 @@ class UserProfile extends StatelessWidget {
                     'Email:',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text('johnsmith@hotelease.co.in'),
+                  Text('jadajones@hotelease.co.in'),
                   SizedBox(height: 8),
                   Text(
                     'Phone:',
@@ -126,8 +128,11 @@ class UserProfile extends StatelessWidget {
                     'Change Password', 
                     color: Colors.brown, 
                     onPressed: () {
-                      // Placeholder function for changing password
-                      print('Change Password clicked');
+                      // Navigate to ResetPassScreen when this button is clicked
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ResetPassScreen()),
+                      );
                     }
                   ), 
                   Spacer(),
@@ -148,6 +153,7 @@ class UserProfile extends StatelessWidget {
       ),
     );
   }
+
   Widget buildProfileButton(String title, {Color color = const Color.fromARGB(255, 82, 58, 49), Color textColor = const Color.fromARGB(255, 242, 169, 146), required VoidCallback onPressed}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

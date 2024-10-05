@@ -123,7 +123,7 @@ class _ResetPassScreenState extends State<ResetPassScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
-                      'Forgot Password',
+                      'Password reset',
                       style: TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold,

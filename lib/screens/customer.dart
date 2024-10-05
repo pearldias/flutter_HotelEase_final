@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 class CustomerScreen extends StatelessWidget {
   const CustomerScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,14 +77,16 @@ class CustomerScreen extends StatelessWidget {
                 mainAxisSpacing: 10,
                 children: [
                   _buildCategoryCard('ROOMS', 'assets/room.jpg', () {
-                    // Define action when "ROOMS" is tapped
+                    // Navigate to RoomsPage on tapping "ROOMS"
+                    Navigator.pushNamed(context, '/rooms');
                   }),
                   _buildCategoryCard('BOOKING & PAYMENT', 'assets/booking_payment.jpg', () {
                     // Navigate to BookingForm on tapping "BOOKING & PAYMENT"
                     Navigator.pushNamed(context, '/bookingAndPayment');
                   }),
                   _buildCategoryCard('SERVICE', 'assets/service.jpg', () {
-                    // Define action when "SERVICE" is tapped
+                    // Navigate to RoomService on tapping "SERVICE"
+                    Navigator.pushNamed(context, '/roomService'); // Change made here
                   }),
                   _buildCategoryCard('FEEDBACK', 'assets/feedback.jpg', () {
                     // Navigate to FeedbackScreen on tapping "FEEDBACK"

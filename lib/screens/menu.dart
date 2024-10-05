@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'user.dart'; // Import the UserProfile screen
 import 'login.dart'; // Import the LoginScreen
-
+import 'aboutus.dart'; // Import the AboutUs screen
+import 'gallery.dart'; // Import the GalleryPage
+import 'amenities.dart'; // Import the AmenitiesPage
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,9 +65,8 @@ class MenuScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start, // Aligning to the left
                     children: [
                       _buildMenuButton(context, 'Home'),
-                      _buildMenuButton(context, 'About Us'),
+                      _buildMenuButton(context, 'About Us'), // "About Us" button
                       _buildMenuButton(context, 'Gallery'),
-                      _buildMenuButton(context, 'Reviews'),
                       _buildMenuButton(context, 'Amenities'),
                       _buildMenuButton(context, 'Profile'),
                       _buildMenuButton(context, 'Logout'), // Logout button
@@ -112,9 +112,25 @@ class MenuScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to login screen
                 );
-              }
-              // Add other actions for additional buttons if necessary
-              else if (title == 'Contact Us') {
+              } else if (title == 'About Us') {
+                // Navigate to the AboutUs screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutUs()), // Navigate to AboutUs screen
+                );
+              } else if (title == 'Gallery') {
+                // Navigate to the GalleryPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GalleryPage()), // Navigate to GalleryPage
+                );
+              } else if (title == 'Amenities') {
+                // Navigate to the AmenitiesPage screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AmenitiesPage()), // Navigate to AmenitiesPage
+                );
+              } else if (title == 'Contact Us') {
                 // Navigate to Contact Us or perform some action
               }
             },

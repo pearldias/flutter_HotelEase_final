@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'roomdetails.dart'; // Import the RoomsPage
+import 'paymenttype.dart'; // Import the PaymentPage
+
 class BookingForm extends StatefulWidget {
   @override
   _BookingFormState createState() => _BookingFormState();
 }
+
 class _BookingFormState extends State<BookingForm> {
   final _formKey = GlobalKey<FormState>();
   String _selectedRoomType = 'Delux'; // Default room type
@@ -11,6 +15,7 @@ class _BookingFormState extends State<BookingForm> {
   TimeOfDay? _checkInTime, _checkOutTime;
   int _adults = 0, _children = 0;
   TextEditingController _specialRequestController = TextEditingController();
+
   // Function to select date
   Future<void> _selectDate(BuildContext context, bool isCheckIn) async {
     final DateTime? picked = await showDatePicker(
@@ -29,6 +34,7 @@ class _BookingFormState extends State<BookingForm> {
       });
     }
   }
+
   // Function to select time
   Future<void> _selectTime(BuildContext context, bool isCheckIn) async {
     final TimeOfDay? picked = await showTimePicker(
@@ -45,6 +51,7 @@ class _BookingFormState extends State<BookingForm> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,7 +155,10 @@ class _BookingFormState extends State<BookingForm> {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          print('Check availability');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RoomDetailPage()), // Navigate to RoomsPage
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -161,6 +171,28 @@ class _BookingFormState extends State<BookingForm> {
                         children: [
                           Text('Check Availability', style: TextStyle(color: Colors.white)),
                           Icon(Icons.arrow_forward, color: Colors.white),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16), // Spacing between buttons
+                    ElevatedButton(
+                      onPressed: () {
+                        // Navigate to PaymentPage when proceeding to pay
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PaymentPage()), // Navigate to PaymentPage
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF8C6239), // Brown color
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        textStyle: TextStyle(fontSize: 18),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Proceed to Pay', style: TextStyle(color: Colors.white)),
+                          Icon(Icons.payment, color: Colors.white),
                         ],
                       ),
                     ),

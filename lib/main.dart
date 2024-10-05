@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'screens/splash_page.dart';
 import 'screens/login.dart';
 import 'screens/menu.dart'; // Import for MenuScreen
+import 'screens/aboutus.dart'; // Import the AboutUs screen
 import 'screens/customer.dart'; // Import for CustomerScreen
 import 'screens/booking.dart'; // Import for BookingAndPaymentScreen
 import 'screens/feedback.dart'; // Import for FeedbackScreen
 import 'screens/user.dart';
+import 'screens/roomservice.dart';
+import 'screens/foodmenu.dart';
+import 'screens/paymenttype.dart';
+import 'screens/roomdetails.dart';
+import 'screens/rooms.dart';
+import 'screens/amenities.dart';
+import 'screens/gallery.dart'; // Import the GalleryPage
 import 'screens/custlogin.dart';
 import 'screens/employee_login_page.dart'; // Employee Login Page
 import 'screens/signup_page.dart'; // Signup Page
@@ -42,17 +50,23 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(), // Home Page
         '/login': (context) => const LoginScreen(), // Login Page
         '/custlogin': (context) => const CustLoginScreen(),
-        '/emplogin': (context) =>
-            const EmployeeLoginPage(), // Employee Login Page
+        '/emplogin': (context) => const EmployeeLoginPage(), // Employee Login Page
         '/signup': (context) => const SignupPage(), // Signup Page
-        '/resetpass': (context) =>
-            const ResetPassScreen(), // Reset Password Page
+        '/resetpass': (context) => const ResetPassScreen(), // Reset Password Page
         '/customer_home': (context) => const CustomerScreen(),
         '/menu': (context) => MenuScreen(),
         '/bookingAndPayment': (context) => BookingForm(),
         '/feedback': (context) => FeedbackScreen(),
         '/user': (context) => UserProfile(),
         '/success': (context) => SuccessScreen(), // SuccessScreen route
+        '/about': (context) => AboutUs(), // Route for the AboutUs screen
+        '/gallery': (context) => GalleryPage(), // Add GalleryPage route here
+        '/amenities': (context) => AmenitiesPage(),
+        '/roomdetails': (context) => RoomDetailPage(),
+        '/payment': (context) => PaymentPage(),
+        '/rooms': (context) => RoomsPage(),
+        '/roomService': (context) => RoomService(),
+        '/foodMenu': (context) => FoodMenu(),
       },
     );
   }
