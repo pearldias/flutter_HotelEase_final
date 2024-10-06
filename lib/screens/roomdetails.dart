@@ -170,7 +170,7 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
                   SizedBox(height: 8),
                   Text('Free Cancellation until 22 July',
                       style: TextStyle(color: Colors.black)),
-                  Text('After that, USD 50 Fee applies',
+                  Text('After that, RS 421 Fee applies',
                       style: TextStyle(color: Colors.black)),
                   Text('Cancellation made on 26 July is 50% Refundable',
                       style: TextStyle(color: Colors.black)),
@@ -186,11 +186,11 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
                   SizedBox(height: 8),
                   // Showing prices in plain text
                   Text(
-                    'USD 964 3 nights',
+                    'RS 8105 3 nights',
                     style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                   Text(
-                    'USD 327 1 night',
+                    'RS 2742 1 night',
                     style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ],
