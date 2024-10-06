@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'success.dart'; // Import the SuccessScreen class
-
 class PaymentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -134,7 +133,6 @@ class PaymentPage extends StatelessWidget {
       ),
     );
   }
-
   // Function to build payment options
   Widget _buildPaymentOption(
       BuildContext context, String title, IconData icon, List<Widget> fields) {
@@ -160,7 +158,6 @@ class PaymentPage extends StatelessWidget {
       ],
     );
   }
-
   // Function to build text fields for payment details
   Widget _buildTextField(String placeholder, String value) {
     return Padding(
