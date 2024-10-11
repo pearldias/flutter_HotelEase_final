@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dashboard.dart'; // Import the DashboardPage
 
 class EmployeeLoginPage extends StatefulWidget {
   const EmployeeLoginPage({super.key});
@@ -108,9 +109,12 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                         ),
                       ),
                       onPressed: () {
-                        // Handle login logic
-                        print('Employee Email: ${_emailController.text}');
-                        print('Password: ${_passwordController.text}');
+                        // Handle login logic and navigate to Dashboard
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashboardPage()),
+                        );
                       },
                       child: const Text(
                         'Log In',

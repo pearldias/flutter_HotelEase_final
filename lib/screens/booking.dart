@@ -154,29 +154,6 @@ class _BookingFormState extends State<BookingForm> {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => RoomDetailPage()), // Navigate to RoomsPage
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF8C6239), // Brown color
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        textStyle: TextStyle(fontSize: 18),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Check Availability', style: TextStyle(color: Colors.white)),
-                          Icon(Icons.arrow_forward, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16), // Spacing between buttons
-                    ElevatedButton(
-                      onPressed: () {
                         // Navigate to PaymentPage when proceeding to pay
                         Navigator.push(
                           context,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'resetpass.dart'; // Import the ResetPassScreen class
-
+import 'editcust.dart'; // Import the EditProfileScreen class
 class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -120,8 +120,11 @@ class UserProfile extends StatelessWidget {
                     'Edit Profile', 
                     color: Colors.brown, 
                     onPressed: () {
-                      // Placeholder function for editing profile
-                      print('Edit Profile clicked');
+                      // Navigate to EditProfileScreen when this button is clicked
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EditcustProfileScreen()),
+                      );
                     }
                   ), 
                   buildProfileButton(
