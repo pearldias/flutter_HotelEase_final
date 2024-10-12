@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'roomdetails.dart'; // Import the RoomDetailPage
-
+import 'droom.dart'; // Import the DeluxeRoomDetailPage
+import 'doublestandard.dart'; // Import the DoubleStandardRoomDetailPage
 class RoomsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -75,14 +76,22 @@ class RoomsPage extends StatelessWidget {
                 imagePath: 'assets/rooms2.jpg',
                 roomTitle: 'Double Standard Room',
                 onPressed: () {
-                  // Implement navigation for Double Standard Room if needed
+                  // Navigate to DoubleStandardRoomDetailPage
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DoubleStandardRoomDetailPage()),
+                  );
                 },
               ),
               RoomItem(
                 imagePath: 'assets/rooms3.jpg',
                 roomTitle: 'Deluxe Room',
                 onPressed: () {
-                  // Implement navigation for Deluxe Room if needed
+                  // Navigate to DeluxeRoomDetailPage
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DeluxeRoomDetailPage()),
+                  );
                 },
               ),
             ],
@@ -92,13 +101,10 @@ class RoomsPage extends StatelessWidget {
     );
   }
 }
-
 class FacilityIcon extends StatelessWidget {
   final IconData icon;
   final String label;
-
   FacilityIcon({required this.icon, required this.label});
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -114,14 +120,11 @@ class FacilityIcon extends StatelessWidget {
     );
   }
 }
-
 class RoomItem extends StatelessWidget {
   final String imagePath;
   final String roomTitle;
   final VoidCallback onPressed; // Function parameter for navigation
-
   RoomItem({required this.imagePath, required this.roomTitle, required this.onPressed});
-
   @override
   Widget build(BuildContext context) {
     return Padding(

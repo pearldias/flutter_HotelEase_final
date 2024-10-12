@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "package:intl/intl.dart";
+import 'package:intl/intl.dart';
 import 'roomdetails.dart'; // Import the RoomsPage
 import 'paymenttype.dart'; // Import the PaymentPage
 
@@ -68,19 +68,16 @@ class _BookingFormState extends State<BookingForm> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image:
-                AssetImage('assets/background_image.jpg'), // Background image
+            image: AssetImage('assets/background_image.jpg'), // Background image
             fit: BoxFit.cover,
           ),
         ),
         child: Center(
           child: Container(
-            margin:
-                EdgeInsets.symmetric(horizontal: 16), // Add horizontal margin
+            margin: EdgeInsets.symmetric(horizontal: 16), // Add horizontal margin
             padding: EdgeInsets.all(16), // Add padding inside the beige box
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 204, 146, 75)
-                  .withOpacity(0.9), // Beige color with opacity
+              color: Color.fromARGB(255, 204, 146, 75).withOpacity(0.9), // Beige color with opacity
               borderRadius: BorderRadius.circular(12.0), // Rounded corners
             ),
             child: Form(
@@ -88,17 +85,13 @@ class _BookingFormState extends State<BookingForm> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    buildDateField(
-                        context, 'Check-in date', _checkInDate, true),
+                    buildDateField(context, 'Check-in date', _checkInDate, true),
                     SizedBox(height: 8),
-                    buildDateField(
-                        context, 'Check-out date', _checkOutDate, false),
+                    buildDateField(context, 'Check-out date', _checkOutDate, false),
                     SizedBox(height: 8),
-                    buildTimeField(
-                        context, 'Check-in time', _checkInTime, true),
+                    buildTimeField(context, 'Check-in time', _checkInTime, true),
                     SizedBox(height: 8),
-                    buildTimeField(
-                        context, 'Check-out time', _checkOutTime, false),
+                    buildTimeField(context, 'Check-out time', _checkOutTime, false),
                     SizedBox(height: 8),
                     Row(
                       children: [
@@ -130,12 +123,10 @@ class _BookingFormState extends State<BookingForm> {
                           borderSide: BorderSide(color: Colors.black),
                         ),
                       ),
-                      items: ['Delux', 'Standard', 'Double Standard']
-                          .map((String type) {
+                      items: ['Delux', 'Standard', 'Double Standard'].map((String type) {
                         return DropdownMenuItem<String>(
                           value: type,
-                          child:
-                              Text(type, style: TextStyle(color: Colors.black)),
+                          child: Text(type, style: TextStyle(color: Colors.black)),
                         );
                       }).toList(),
                       onChanged: (newValue) {
@@ -163,38 +154,10 @@ class _BookingFormState extends State<BookingForm> {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    RoomDetailPage()), // Navigate to RoomsPage
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF8C6239), // Brown color
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        textStyle: TextStyle(fontSize: 18),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Check Availability',
-                              style: TextStyle(color: Colors.white)),
-                          Icon(Icons.arrow_forward, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16), // Spacing between buttons
-                    ElevatedButton(
-                      onPressed: () {
                         // Navigate to PaymentPage when proceeding to pay
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  PaymentPage()), // Navigate to PaymentPage
+                          MaterialPageRoute(builder: (context) => PaymentPage()), // Navigate to PaymentPage
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -205,8 +168,7 @@ class _BookingFormState extends State<BookingForm> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Proceed to Pay',
-                              style: TextStyle(color: Colors.white)),
+                          Text('Proceed to Pay', style: TextStyle(color: Colors.white)),
                           Icon(Icons.payment, color: Colors.white),
                         ],
                       ),
@@ -221,8 +183,7 @@ class _BookingFormState extends State<BookingForm> {
     );
   }
 
-  Widget buildDateField(
-      BuildContext context, String label, DateTime? date, bool isCheckIn) {
+  Widget buildDateField(BuildContext context, String label, DateTime? date, bool isCheckIn) {
     return InkWell(
       onTap: () => _selectDate(context, isCheckIn),
       child: InputDecorator(
@@ -246,8 +207,7 @@ class _BookingFormState extends State<BookingForm> {
     );
   }
 
-  Widget buildTimeField(
-      BuildContext context, String label, TimeOfDay? time, bool isCheckIn) {
+  Widget buildTimeField(BuildContext context, String label, TimeOfDay? time, bool isCheckIn) {
     return InkWell(
       onTap: () => _selectTime(context, isCheckIn),
       child: InputDecorator(
