@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'roomdetails.dart'; // Import the RoomDetailPage
 import 'droom.dart'; // Import the DeluxeRoomDetailPage
 import 'doublestandard.dart'; // Import the DoubleStandardRoomDetailPage
-
 class RoomsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -102,13 +101,10 @@ class RoomsPage extends StatelessWidget {
     );
   }
 }
-
 class FacilityIcon extends StatelessWidget {
   final IconData icon;
   final String label;
-
   FacilityIcon({required this.icon, required this.label});
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -124,14 +120,11 @@ class FacilityIcon extends StatelessWidget {
     );
   }
 }
-
 class RoomItem extends StatelessWidget {
   final String imagePath;
   final String roomTitle;
   final VoidCallback onPressed; // Function parameter for navigation
-
   RoomItem({required this.imagePath, required this.roomTitle, required this.onPressed});
-
   @override
   Widget build(BuildContext context) {
     return Padding(

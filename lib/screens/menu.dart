@@ -4,6 +4,7 @@ import 'login.dart'; // Import the LoginScreen
 import 'aboutus.dart'; // Import the AboutUs screen
 import 'gallery.dart'; // Import the GalleryPage
 import 'amenities.dart'; // Import the AmenitiesPage
+
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
   @override
@@ -15,7 +16,8 @@ class MenuScreen extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/bg.jpg'), // Ensure the asset path is correct
+                image: AssetImage(
+                    'assets/bg.jpg'), // Ensure the asset path is correct
                 fit: BoxFit.cover,
               ),
             ),
@@ -62,15 +64,18 @@ class MenuScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 16, top: 20),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, // Aligning to the left
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start, // Aligning to the left
                     children: [
                       _buildMenuButton(context, 'Home'),
-                      _buildMenuButton(context, 'About Us'), // "About Us" button
+                      _buildMenuButton(
+                          context, 'About Us'), // "About Us" button
                       _buildMenuButton(context, 'Gallery'),
                       _buildMenuButton(context, 'Amenities'),
                       _buildMenuButton(context, 'Profile'),
                       _buildMenuButton(context, 'Logout'), // Logout button
-                      _buildMenuButton(context, 'Contact Us'), // Added "Contact Us"
+                      _buildMenuButton(
+                          context, 'Contact Us'), // Added "Contact Us"
                     ],
                   ),
                 ),
@@ -93,7 +98,8 @@ class MenuScreen extends StatelessWidget {
           height: 40,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white.withOpacity(0.8), // Use `backgroundColor` instead of `primary`
+              backgroundColor: Colors.white.withOpacity(
+                  0.8), // Use `backgroundColor` instead of `primary`
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -104,31 +110,41 @@ class MenuScreen extends StatelessWidget {
               } else if (title == 'Profile') {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserProfile()), // Navigate to UserProfile screen
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          UserProfile()), // Navigate to UserProfile screen
                 );
               } else if (title == 'Logout') {
                 // Navigate to the LoginScreen when Logout is pressed
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to login screen
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoginScreen()), // Navigate to login screen
                 );
               } else if (title == 'About Us') {
                 // Navigate to the AboutUs screen
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AboutUs()), // Navigate to AboutUs screen
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AboutUs()), // Navigate to AboutUs screen
                 );
               } else if (title == 'Gallery') {
                 // Navigate to the GalleryPage
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => GalleryPage()), // Navigate to GalleryPage
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          GalleryPage()), // Navigate to GalleryPage
                 );
               } else if (title == 'Amenities') {
                 // Navigate to the AmenitiesPage screen
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AmenitiesPage()), // Navigate to AmenitiesPage
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AmenitiesPage()), // Navigate to AmenitiesPage
                 );
               } else if (title == 'Contact Us') {
                 // Navigate to Contact Us or perform some action
