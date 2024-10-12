@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dashboard.dart'; // Import the DashboardPage
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
 
 class EmployeeLoginPage extends StatefulWidget {
   const EmployeeLoginPage({super.key});
@@ -11,6 +12,53 @@ class EmployeeLoginPage extends StatefulWidget {
 class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _login() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      // Show a message if email or password is empty
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter both email and password')),
+      );
+      return;
+    }
+
+    try {
+      // Query the Firestore collection to check if the email exists
+      DocumentSnapshot employeeDoc =
+          await _firestore.collection('Employee').doc(email).get();
+
+      if (employeeDoc.exists) {
+        // If document exists, check if password matches
+        String storedPassword = employeeDoc.get('password');
+
+        if (storedPassword == password) {
+          // If password matches, proceed to Dashboard
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => DashboardPage()),
+          );
+        } else {
+          // Show an error if the password is incorrect
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Incorrect password')),
+          );
+        }
+      } else {
+        // Show an error if the email is not found in the database
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Employee not found')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,14 +156,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      onPressed: () {
-                        // Handle login logic and navigate to Dashboard
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashboardPage()),
-                        );
-                      },
+                      onPressed: _login, // Call _login function
                       child: const Text(
                         'Log In',
                         style: TextStyle(color: Colors.white),

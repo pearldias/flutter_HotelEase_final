@@ -1,20 +1,148 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'login.dart'; // Import LoginScreen
 import 'dashboard.dart'; // Import DashboardPage
 import 'editprofile.dart'; // Import EditProfileScreen
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  late TextEditingController _phoneController;
+  late TextEditingController _addressController;
+
+  String _employeeName = '';
+  String _employeeDesignation = '';
+  String _employeeEmail = '';
+  String _employeePhone = '';
+  String _employeeAddress = '';
+  bool _isEditing = false; // Toggle between edit and view mode
+  bool _isLoading = true; // Show loading indicator
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneController = TextEditingController(); // Initialize controllers
+    _addressController = TextEditingController();
+    _loadEmployeeData(); // Load employee data when the screen is initialized
+  }
+
+  // Fetch employee data from Firestore
+  Future<void> _loadEmployeeData() async {
+    try {
+      User? currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        throw Exception('User not logged in');
+      }
+
+      String userEmail = currentUser.email!;
+      print("Trying to fetch document for email: $userEmail");
+
+      DocumentSnapshot employeeDoc =
+          await _firestore.collection('Employee').doc(userEmail).get();
+
+      print("Document exists: ${employeeDoc.exists}");
+      if (employeeDoc.exists) {
+        setState(() {
+          _employeeName =
+              employeeDoc['empname'] ?? 'No name'; // Retrieve employee name
+          _employeeDesignation = employeeDoc['designation'] ??
+              'No designation'; // Retrieve designation
+          _employeeEmail = employeeDoc['email'] ?? 'No email'; // Retrieve email
+          _employeePhone = employeeDoc['phone'] ?? 'No phone'; // Retrieve phone
+          _employeeAddress = employeeDoc['address'] ??
+              'No address'; // Retrieve address (fixed typo)
+
+          // Initialize controllers with values from Firestore
+          _phoneController.text = _employeePhone; // Retrieve phone
+          _addressController.text = _employeeAddress; // Retrieve address
+          _isLoading = false; // Data loaded, stop showing loading indicator
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Employee data not found')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading data: ${e.toString()}')),
+      );
+    }
+  }
+
+  Future<void> _updateEmployeeData() async {
+    try {
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        // Prepare employee data to update
+        Map<String, dynamic> updateData = {
+          'email': _employeeEmail, // Keep the email
+          'empname': _employeeName, // Keep the employee name
+          'designation': _employeeDesignation, // Keep the designation
+          'phone': _phoneController.text.isNotEmpty
+              ? _phoneController.text
+              : null, // Update phone
+          'address': _addressController.text.isNotEmpty
+              ? _addressController.text
+              : null, // Update address
+        };
+
+        // Update Firestore document with employee data
+        await _firestore
+            .collection('Employee')
+            .doc(currentUser.email)
+            .set(updateData, SetOptions(merge: true));
+
+        setState(() {
+          _isEditing = false; // Exit edit mode after saving
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully')),
+        );
+      }
+    } catch (e) {
+      print("Error updating employee data: $e");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      // Show a loading indicator while data is being fetched
+      return Scaffold(
+        backgroundColor: const Color(0xFFEDE7E3), // Light brown background
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF5D4037), // Dark brown AppBar
+          title: const Text(
+            'Profile',
+            style: TextStyle(
+                color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
+          ),
+          centerTitle: true,
+        ),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFEDE7E3), // Light brown background
       appBar: AppBar(
         backgroundColor: const Color(0xFF5D4037), // Dark brown AppBar
         title: const Text(
           'Profile',
-          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -30,7 +158,8 @@ class ProfileScreen extends StatelessWidget {
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 10),
-            child: Icon(Icons.person, size: 30, color: Colors.white), // Right side icon
+            child: Icon(Icons.person,
+                size: 30, color: Colors.white), // Right side icon
           ),
         ],
       ),
@@ -57,7 +186,8 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   const CircleAvatar(
                     radius: 45,
-                    backgroundColor: Color(0xFF795548), // Light brown for icon background
+                    backgroundColor:
+                        Color(0xFF795548), // Light brown for icon background
                     child: Icon(
                       Icons.person,
                       size: 55,
@@ -67,19 +197,23 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        'Employee Name',
-                        style: TextStyle(
+                        _employeeName.isNotEmpty
+                            ? _employeeName
+                            : 'Loading...', // Display employee name
+                        style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
-                        'Employee Designation',
-                        style: TextStyle(
+                        _employeeDesignation.isNotEmpty
+                            ? _employeeDesignation
+                            : 'Loading...', // Display designation
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white70,
                         ),
@@ -112,60 +246,60 @@ class ProfileScreen extends StatelessWidget {
                   _buildInteractiveCard(
                     context,
                     label: 'Email',
-                    value: 'example@domain.com',
+                    value: _employeeEmail.isNotEmpty
+                        ? _employeeEmail
+                        : 'Loading...', // Display email
                     icon: Icons.email,
+                    editable: false,
                   ),
 
                   // Phone Card
                   _buildInteractiveCard(
                     context,
                     label: 'Phone',
-                    value: '1234567890',
+                    value: _employeePhone.isNotEmpty
+                        ? _employeePhone
+                        : 'Loading...', // Display phone
                     icon: Icons.phone,
+                    editable: _isEditing,
+                    controller: _phoneController,
                   ),
 
                   // Address Card
                   _buildInteractiveCard(
                     context,
                     label: 'Address',
-                    value: '123, Sample Street, City',
+                    value: _employeeAddress.isNotEmpty
+                        ? _employeeAddress
+                        : 'Loading...', // Display address
                     icon: Icons.location_on,
+                    editable: _isEditing,
+                    controller: _addressController,
                   ),
 
                   const SizedBox(height: 20),
 
-                  // Edit Profile button with gradient
-                  _buildButton(
-                    label: 'Edit Profile Details',
-                    onPressed: () {
-                      // Navigate to EditProfileScreen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const EditProfileScreen()),
-                      );
-                    },
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF795548), Color(0xFF6D4C41)], // Gradient shades of brown
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+                  // Toggle Edit/Save button
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.brown,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50,
+                        vertical: 15,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Log Out button with darker gradient
-                  _buildButton(
-                    label: 'Log Out',
                     onPressed: () {
-                      // Navigate to LoginScreen upon logout
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                      );
+                      if (_isEditing) {
+                        _updateEmployeeData(); // Update data if in editing mode
+                      } else {
+                        setState(() {
+                          _isEditing = true; // Switch to editing mode
+                        });
+                      }
                     },
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF5D4037), Color(0xFF4E342E)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+                    child: Text(
+                      _isEditing ? 'Save' : 'Edit',
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
                 ],
@@ -177,74 +311,42 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Method for building interactive card for information fields
-  Widget _buildInteractiveCard(BuildContext context, {required String label, required String value, required IconData icon}) {
+  Widget _buildInteractiveCard(
+    BuildContext context, {
+    required String label,
+    required String value,
+    required IconData icon,
+    bool editable = false,
+    TextEditingController? controller,
+  }) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      elevation: 5,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        onTap: () {
-          // Add functionality for editing information
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(icon, color: Colors.brown[800], size: 28), // Larger icon
-                  const SizedBox(width: 10),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.brown[900],
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                value,
-                style: const TextStyle(fontSize: 16, color: Colors.black87),
-              ),
-            ],
-          ),
-        ),
+      margin: const EdgeInsets.only(bottom: 16.0),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
       ),
-    );
-  }
-
-  // Method for building custom buttons with gradient and elevated design
-  Widget _buildButton({required String label, required void Function()? onPressed, required Gradient gradient}) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: gradient,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black38,
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
-        child: Text(
-          label,
-          style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.brown),
+        title: editable
+            ? TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  labelText: label,
+                  border: const OutlineInputBorder(),
+                ),
+              )
+            : Text(
+                '$label: $value',
+                style: const TextStyle(fontSize: 18),
+              ),
+        trailing: editable
+            ? IconButton(
+                icon: const Icon(Icons.check, color: Colors.green),
+                onPressed: () {
+                  // Handle the save action here if needed
+                },
+              )
+            : null,
       ),
     );
   }
