@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
 import 'package:firebase_auth/firebase_auth.dart'; // Firebase import
 
 class SignupPage extends StatefulWidget {
@@ -10,11 +11,18 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore =
+      FirebaseFirestore.instance; // Firestore instance
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _phoneController =
+      TextEditingController(); // New phone controller
+  final TextEditingController _addressController =
+      TextEditingController(); // New address controller
 
   Future<void> _signUp() async {
     if (_passwordController.text != _confirmPasswordController.text) {
@@ -25,12 +33,25 @@ class _SignupPageState extends State<SignupPage> {
     }
 
     try {
+      // Create the user with Firebase Auth
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
       print('Signup successful: ${userCredential.user?.email}');
+
+      // Save user information to Firestore, using email as the document ID
+      await _firestore.collection('Users').doc(_emailController.text).set({
+        'email': _emailController.text,
+        'username': _usernameController.text,
+        'phone': _phoneController.text.isEmpty
+            ? ''
+            : _phoneController.text, // Save as blank string if empty
+        'address': _addressController.text.isEmpty
+            ? ''
+            : _addressController.text, // Save as blank string if empty
+      });
 
       // Navigate to CustomerHomePage after successful signup
       Navigator.pushReplacementNamed(context, '/customer_home');
@@ -106,6 +127,18 @@ class _SignupPageState extends State<SignupPage> {
                     TextField(
                       controller: _usernameController,
                       decoration: const InputDecoration(labelText: 'Username'),
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextField(
+                      controller: _phoneController,
+                      decoration: const InputDecoration(
+                          labelText: 'Phone Number'), // New phone field
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextField(
+                      controller: _addressController,
+                      decoration: const InputDecoration(
+                          labelText: 'Address'), // New address field
                     ),
                     const SizedBox(height: 16.0),
                     TextField(

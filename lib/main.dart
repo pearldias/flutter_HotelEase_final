@@ -9,21 +9,13 @@ import 'screens/feedback.dart'; // Import for FeedbackScreen
 import 'screens/user.dart';
 import 'screens/roomservice.dart';
 import 'screens/foodmenu.dart';
-import 'screens/notification.dart'; 
 import 'screens/paymenttype.dart';
 import 'screens/roomdetails.dart';
 import 'screens/rooms.dart';
 import 'screens/amenities.dart';
 import 'screens/gallery.dart'; // Import the GalleryPage
 import 'screens/custlogin.dart';
-import 'screens/employee_login_page.dart';
-import 'screens/dashboard.dart';
-import 'screens/editprofile.dart';
-import 'screens/editcust.dart'; // Import EditProfileScreen class
-import 'screens/droom.dart';
-import 'screens/doublestandard.dart';
-import 'screens/empfeedback.dart';
-import 'screens/profilesetting.dart';
+import 'screens/employee_login_page.dart'; // Employee Login Page
 import 'screens/signup_page.dart'; // Signup Page
 import 'screens/home_page.dart'; // Home Page
 import 'screens/resetpass.dart'; // Reset Password Page
@@ -31,6 +23,7 @@ import 'screens/customer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:app/screens/success.dart';  // If success.dart is located in screens
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -38,8 +31,10 @@ void main() async {
   );
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -72,12 +67,6 @@ class MyApp extends StatelessWidget {
         '/rooms': (context) => RoomsPage(),
         '/roomService': (context) => RoomService(),
         '/foodMenu': (context) => FoodMenu(),
-        '/dashboard': (context) => DashboardPage(),
-        '/employeeFeedback': (context) => EmployeeFeedbackPage(),
-        '/notification': (context) => NotificationPage(),
-        '/edit-profile': (context) => const EditProfileScreen(),
-        '/editcustprofile': (context) => EditcustProfileScreen(),
-        '/deluxe-room': (context) => DeluxeRoomDetailPage(),
       },
     );
   }

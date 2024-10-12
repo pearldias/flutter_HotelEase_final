@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'roomdetails.dart'; // Import the RoomDetailPage
-import 'droom.dart'; // Import the DeluxeRoomDetailPage
-import 'doublestandard.dart'; // Import the DoubleStandardRoomDetailPage
 
 class RoomsPage extends StatelessWidget {
   @override
@@ -77,22 +75,14 @@ class RoomsPage extends StatelessWidget {
                 imagePath: 'assets/rooms2.jpg',
                 roomTitle: 'Double Standard Room',
                 onPressed: () {
-                  // Navigate to DoubleStandardRoomDetailPage
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DoubleStandardRoomDetailPage()),
-                  );
+                  // Implement navigation for Double Standard Room if needed
                 },
               ),
               RoomItem(
                 imagePath: 'assets/rooms3.jpg',
                 roomTitle: 'Deluxe Room',
                 onPressed: () {
-                  // Navigate to DeluxeRoomDetailPage
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DeluxeRoomDetailPage()),
-                  );
+                  // Implement navigation for Deluxe Room if needed
                 },
               ),
             ],
