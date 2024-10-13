@@ -1,3 +1,16 @@
+buildscript {
+    ext.kotlin_version = '1.7.10' // You can adjust this version based on your needs.
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.7.0" // Make sure your Gradle version matches your project setup
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // Other dependencies...
+    }
+}
+
 allprojects {
     repositories {
         google()
