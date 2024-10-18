@@ -31,6 +31,9 @@ import 'screens/signup_page.dart';
 import 'screens/homepage.dart';
 import 'screens/resetpass.dart';
 import 'screens/success.dart';
+import 'screens/guestcust.dart';
+import 'screens/guestmenu.dart';
+import 'screens/guestrooms.dart';
 // Import for platform detection
 import 'package:flutter/foundation.dart' show kIsWeb; // For web check
 import 'dart:io' show Platform; // For mobile platforms (iOS, Android)
@@ -73,7 +76,7 @@ class MyApp extends StatelessWidget {
         '/emplogin': (context) => const EmployeeLoginPage(),
         '/signup': (context) => const SignupPage(),
         '/resetpass': (context) => const ResetPassScreen(),
-        '/customer_home': (context) => const CustomerScreen(),
+        '/customer_home': (context) => CustomerScreen(),
         '/menu': (context) => MenuScreen(),
         '/bookingAndPayment': (context) => BookingForm(),
         '/feedback': (context) => FeedbackScreen(),
@@ -94,6 +97,8 @@ class MyApp extends StatelessWidget {
         '/double-standard-room': (context) => DoubleStandardRoomDetailPage(),
         '/contact': (context) => const ContactPage(),
         '/location': (context) => HotelAddPage(),
+        '/guestcust': (context) => const GuestCustomerScreen(),
+        '/guestMenu': (context) => const GuestMenuScreen(),
       },
     );
   }

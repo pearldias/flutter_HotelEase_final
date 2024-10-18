@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,8 +25,7 @@ class LoginScreen extends StatelessWidget {
           Center(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 50.0, horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 24.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -44,11 +45,8 @@ class LoginScreen extends StatelessWidget {
                     // Professional welcome text
                     Text(
                       'Welcome to HotelEase',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineMedium
-                          ?.copyWith(
-                            fontSize: 28.0, // Slightly smaller font for sleekness
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            fontSize: 28.0,
                             fontWeight: FontWeight.w600,
                             color: Colors.brown[900],
                           ),
@@ -62,7 +60,7 @@ class LoginScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Colors.brown[700],
                             fontWeight: FontWeight.w500,
-                            fontSize: 18.0, // Reduced for a more modern look
+                            fontSize: 18.0,
                           ),
                       textAlign: TextAlign.center,
                     ),
@@ -82,8 +80,7 @@ class LoginScreen extends StatelessWidget {
                           },
                         ),
                         Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: VerticalDivider(
                             width: 1.5,
                             color: Colors.brown[300],
@@ -115,11 +112,11 @@ class LoginScreen extends StatelessWidget {
                     // Guest login button with professional design
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '/customer_home');
+                        // Navigate to guestcust.dart when tapping 'Continue as Guest'
+                        Navigator.pushNamed(context, '/guestcust');
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 14.0, horizontal: 32.0),
+                        padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 32.0),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
@@ -141,15 +138,11 @@ class LoginScreen extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.person_outline,
-                                color: Colors.white),
+                            const Icon(Icons.person_outline, color: Colors.white),
                             const SizedBox(width: 10.0),
                             Text(
                               'Continue as Guest',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16.0,
@@ -171,9 +164,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   // Professional login option with refined design (No icons)
-  Widget _buildLoginOption(BuildContext context, String imagePath,
-      String title, String description, VoidCallback onTap,
-      {double size = 120.0}) {
+  Widget _buildLoginOption(BuildContext context, String imagePath, String title, String description, VoidCallback onTap, {double size = 120.0}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -182,7 +173,7 @@ class LoginScreen extends StatelessWidget {
             padding: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.brown[300], // Lighter shade for a subtle look
+              color: Colors.brown[300],
             ),
             child: ClipOval(
               child: Image.asset(
@@ -196,10 +187,7 @@ class LoginScreen extends StatelessWidget {
           const SizedBox(height: 12.0),
           Text(
             title,
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall
-                ?.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.brown[900],
@@ -210,10 +198,7 @@ class LoginScreen extends StatelessWidget {
             width: size,
             child: Text(
               description,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.brown[700],
                     fontSize: 14.0,
                   ),
