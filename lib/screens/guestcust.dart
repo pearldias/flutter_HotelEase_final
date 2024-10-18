@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'guestmenu.dart';
 import 'guestrooms.dart'; // Import the new GuestRoomsPage
-
 class GuestCustomerScreen extends StatelessWidget {
   const GuestCustomerScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'user.dart'; // Import the UserProfile screen
-import 'login.dart'; // Import the LoginScreen
 import 'aboutus.dart'; // Import the AboutUs screen
 import 'gallery.dart'; // Import the GalleryPage
 import 'amenities.dart'; // Import the AmenitiesPage

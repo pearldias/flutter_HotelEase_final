@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'booking.dart'; // Import the BookingPage
 
 class GuestDoubleStandardRoomDetailPage extends StatefulWidget {
   const GuestDoubleStandardRoomDetailPage({super.key});
