@@ -9,9 +9,10 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   List<Map<String, dynamic>> tasks = [
-    {'description': 'Task description 1', 'priority': 'High'},
-    {'description': 'Task description 2', 'priority': 'Medium'},
-    {'description': 'Task description 3', 'priority': 'Low'},
+    {'description': 'Fire at the poolside! Extinguishers needed!', 'priority': 'High'},
+    {'description': 'Child lost at the reception', 'priority': 'Medium'},
+    {'description': 'Room cleaning request at Room No 6', 'priority': 'Low'},
+    {'description': 'First Aid supplies restock at the gym', 'priority': 'default'},
   ];
 
   List<Map<String, dynamic>> completedTasks = [];
@@ -72,22 +73,6 @@ class _NotificationPageState extends State<NotificationPage> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Daily Task',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings_outlined, color: Colors.white),
-            onPressed: () {
-              // Add settings functionality here
-            },
-          ),
-        ],
       ),
       backgroundColor: const Color(0xFF8D6E63), // Keeping original background color
       body: Padding(

@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
-import 'login.dart'; // Import LoginScreen
-import 'dashboard.dart'; // Import DashboardPage
-import 'editprofile.dart'; // Import EditProfileScreen
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,160 +8,62 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   late TextEditingController _phoneController;
   late TextEditingController _addressController;
 
-  String _employeeName = '';
-  String _employeeDesignation = '';
-  String _employeeEmail = '';
-  String _employeePhone = '';
-  String _employeeAddress = '';
+  String _employeeName = 'John Doe';
+  String _employeeDesignation = 'Software Engineer';
+  String _employeeEmail = 'john.doe@example.com';
+  String _employeePhone = '123-456-7890';
+  String _employeeAddress = '123 Main St, Anytown, USA';
   bool _isEditing = false; // Toggle between edit and view mode
-  bool _isLoading = true; // Show loading indicator
 
   @override
   void initState() {
     super.initState();
-    _phoneController = TextEditingController(); // Initialize controllers
-    _addressController = TextEditingController();
-    _loadEmployeeData(); // Load employee data when the screen is initialized
+    _phoneController = TextEditingController(text: _employeePhone); // Initialize controllers
+    _addressController = TextEditingController(text: _employeeAddress);
   }
 
-  // Fetch employee data from Firestore
-  Future<void> _loadEmployeeData() async {
-    try {
-      User? currentUser = _auth.currentUser;
-      if (currentUser == null) {
-        throw Exception('User not logged in');
-      }
-
-      String userEmail = currentUser.email!;
-      print("Trying to fetch document for email: $userEmail");
-
-      DocumentSnapshot employeeDoc =
-          await _firestore.collection('Employee').doc(userEmail).get();
-
-      print("Document exists: ${employeeDoc.exists}");
-      if (employeeDoc.exists) {
-        setState(() {
-          _employeeName =
-              employeeDoc['empname'] ?? 'No name'; // Retrieve employee name
-          _employeeDesignation = employeeDoc['designation'] ??
-              'No designation'; // Retrieve designation
-          _employeeEmail = employeeDoc['email'] ?? 'No email'; // Retrieve email
-          _employeePhone = employeeDoc['phone'] ?? 'No phone'; // Retrieve phone
-          _employeeAddress = employeeDoc['address'] ??
-              'No address'; // Retrieve address (fixed typo)
-
-          // Initialize controllers with values from Firestore
-          _phoneController.text = _employeePhone; // Retrieve phone
-          _addressController.text = _employeeAddress; // Retrieve address
-          _isLoading = false; // Data loaded, stop showing loading indicator
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Employee data not found')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading data: ${e.toString()}')),
-      );
-    }
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _addressController.dispose();
+    super.dispose();
   }
 
-  Future<void> _updateEmployeeData() async {
-    try {
-      User? currentUser = _auth.currentUser;
-      if (currentUser != null) {
-        // Prepare employee data to update
-        Map<String, dynamic> updateData = {
-          'email': _employeeEmail, // Keep the email
-          'empname': _employeeName, // Keep the employee name
-          'designation': _employeeDesignation, // Keep the designation
-          'phone': _phoneController.text.isNotEmpty
-              ? _phoneController.text
-              : null, // Update phone
-          'address': _addressController.text.isNotEmpty
-              ? _addressController.text
-              : null, // Update address
-        };
+  void _updateEmployeeData() {
+    setState(() {
+      _employeePhone = _phoneController.text;
+      _employeeAddress = _addressController.text;
+      _isEditing = false; // Exit edit mode after saving
+    });
 
-        // Update Firestore document with employee data
-        await _firestore
-            .collection('Employee')
-            .doc(currentUser.email)
-            .set(updateData, SetOptions(merge: true));
-
-        setState(() {
-          _isEditing = false; // Exit edit mode after saving
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully')),
-        );
-      }
-    } catch (e) {
-      print("Error updating employee data: $e");
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile updated successfully')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      // Show a loading indicator while data is being fetched
-      return Scaffold(
-        backgroundColor: const Color(0xFFEDE7E3), // Light brown background
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF5D4037), // Dark brown AppBar
-          title: const Text(
-            'Profile',
-            style: TextStyle(
-                color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
-          ),
-          centerTitle: true,
-        ),
-        body: const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
     return Scaffold(
-      backgroundColor: const Color(0xFFEDE7E3), // Light brown background
       appBar: AppBar(
-        backgroundColor: const Color(0xFF5D4037), // Dark brown AppBar
-        title: const Text(
-          'Profile',
-          style: TextStyle(
-              color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
+        elevation: 0,
+        backgroundColor: const Color(0xFF6D4C41),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            // Navigate back to the DashboardPage without changing profile details
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => DashboardPage()),
-            );
+            Navigator.pop(context);
           },
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Icon(Icons.person,
-                size: 30, color: Colors.white), // Right side icon
-          ),
-        ],
       ),
+      backgroundColor: const Color(0xFFEDE7E3), // Light brown background
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 20), // Space at the top
+
             // Profile header container
             Container(
               margin: const EdgeInsets.all(16),
@@ -186,8 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   const CircleAvatar(
                     radius: 45,
-                    backgroundColor:
-                        Color(0xFF795548), // Light brown for icon background
+                    backgroundColor: Color(0xFF795548), // Light brown for icon background
                     child: Icon(
                       Icons.person,
                       size: 55,
@@ -199,9 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _employeeName.isNotEmpty
-                            ? _employeeName
-                            : 'Loading...', // Display employee name
+                        _employeeName,
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -210,9 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        _employeeDesignation.isNotEmpty
-                            ? _employeeDesignation
-                            : 'Loading...', // Display designation
+                        _employeeDesignation,
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white70,
@@ -246,9 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _buildInteractiveCard(
                     context,
                     label: 'Email',
-                    value: _employeeEmail.isNotEmpty
-                        ? _employeeEmail
-                        : 'Loading...', // Display email
+                    value: _employeeEmail,
                     icon: Icons.email,
                     editable: false,
                   ),
@@ -257,9 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _buildInteractiveCard(
                     context,
                     label: 'Phone',
-                    value: _employeePhone.isNotEmpty
-                        ? _employeePhone
-                        : 'Loading...', // Display phone
+                    value: _employeePhone,
                     icon: Icons.phone,
                     editable: _isEditing,
                     controller: _phoneController,
@@ -269,9 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _buildInteractiveCard(
                     context,
                     label: 'Address',
-                    value: _employeeAddress.isNotEmpty
-                        ? _employeeAddress
-                        : 'Loading...', // Display address
+                    value: _employeeAddress,
                     icon: Icons.location_on,
                     editable: _isEditing,
                     controller: _addressController,
@@ -299,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: Text(
                       _isEditing ? 'Save' : 'Edit',
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18, color: Colors.white), // Change text color to white
                     ),
                   ),
                 ],

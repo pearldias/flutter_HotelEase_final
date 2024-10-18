@@ -1,70 +1,118 @@
 import 'package:flutter/material.dart';
+import 'contact.dart'; // Import the ContactPage
 
-class RoomService extends StatelessWidget {
+class RoomService extends StatefulWidget {
+  const RoomService({super.key});
+
+  @override
+  _RoomServiceState createState() => _RoomServiceState();
+}
+
+class _RoomServiceState extends State<RoomService> {
+  final TextEditingController _searchController = TextEditingController();
+  List<Map<String, String>> _services = [];
+  List<Map<String, String>> _filteredServices = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // List of all services with their details
+    _services = [
+      {
+        'imagePath': 'assets/rs2.jpg',
+        'description': 'Savor Every Moment, Delivered to Your Door!',
+        'serviceName': 'Meals & Beverages',
+        'route': '/foodMenu',
+      },
+      {
+        'imagePath': 'assets/rs1.jpg',
+        'description': 'Your Comfort, Our Priority – Always Pristine.',
+        'serviceName': 'Housekeeping',
+        'route': '/housekeeping',
+      },
+      {
+        'imagePath': 'assets/rs3.jpg',
+        'description': 'Swift Solutions for a Seamless Stay.',
+        'serviceName': 'Maintenance',
+        'route': '/maintenance',
+      },
+    ];
+    _filteredServices = List.from(_services);
+  }
+
+  // Function to filter services based on search input
+  void _filterServices(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredServices = List.from(_services);
+      } else {
+        _filteredServices = _services
+            .where((service) => service['serviceName']!
+                .toLowerCase()
+                .contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.brown,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          'Room Service',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // First service - Meal & Beverage
-              _buildServiceTile(
-                context,
-                'assets/rs2.jpg',
-                'Savor Every Moment, Delivered to Your Door!',
-                'Meals & Beverages',
-                () {
-                  // Navigate to FoodMenu screen
-                  Navigator.pushNamed(context, '/foodMenu');
-                },
+              // Decrease the white border at the top by 1cm (now 30 pixels)
+              const SizedBox(height: 30), // Adjusted height for reduced white space
+              Row(
+                children: [
+                  // Back Arrow Button
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: Colors.brown),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(width: 10), // Spacing between back arrow and search bar
+                  // Search Bar
+                  Expanded(child: _buildSearchBar()),
+                ],
               ),
-
-              SizedBox(height: 20),
-
-              // Second service - Housekeeping
-              _buildServiceTile(
-                context,
-                'assets/rs1.jpg',
-                'Your Comfort, Our Priority – Always Pristine.',
-                'Housekeeping',
-                () {
-                  // Define action when "Housekeeping" is tapped
-                },
-              ),
-
-              SizedBox(height: 20),
-
-              // Third service - Maintenance
-              _buildServiceTile(
-                context,
-                'assets/rs3.jpg',
-                'Swift Solutions for a Seamless Stay.',
-                'Maintenance',
-                () {
-                  // Define action when "Maintenance" is tapped
-                },
-              ),
+              const SizedBox(height: 20),
+              // Service Tiles - filtered list
+              if (_filteredServices.isNotEmpty)
+                ..._filteredServices.map((service) {
+                  return Column(
+                    children: [
+                      _buildServiceTile(
+                        context,
+                        service['imagePath']!,
+                        service['description']!,
+                        service['serviceName']!,
+                        () {
+                          Navigator.pushNamed(context, service['route']!);
+                        },
+                        // Navigate to ContactPage when 'Call Now' is clicked
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ContactPage()),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  );
+                }).toList()
+              else
+                const Text(
+                  'No services found.',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.brown,
+                  ),
+                ),
             ],
           ),
         ),
@@ -72,10 +120,28 @@ class RoomService extends StatelessWidget {
     );
   }
 
+  Widget _buildSearchBar() {
+    return TextField(
+      controller: _searchController,
+      onChanged: (value) => _filterServices(value),
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.search, color: Colors.brown),
+        hintText: 'Search services...',
+        filled: true,
+        fillColor: Colors.brown[50],
+        contentPadding: const EdgeInsets.all(16.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
   Widget _buildServiceTile(BuildContext context, String imagePath,
-      String description, String serviceName, VoidCallback onTap) {
+      String description, String serviceName, VoidCallback onTap, VoidCallback onCallNow) {
     return GestureDetector(
-      onTap: onTap, // Add onTap to handle navigation
+      onTap: onTap,
       child: Card(
         elevation: 5,
         shadowColor: Colors.brown.withOpacity(0.3),
@@ -83,7 +149,6 @@ class RoomService extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image Section
             ClipRRect(
@@ -95,70 +160,58 @@ class RoomService extends StatelessWidget {
                 height: 180,
               ),
             ),
-
-            // Description and Important Text with Call Now Button
+            // Description, Service Name, and Call Now Button in Row
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Service Name (bold, underlined)
-                  Text(
-                    serviceName,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                      color: Colors.brown[900],
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  // Service Description
-                  Text(
-                    description,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.brown[600],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-
-                  // Brown container for important text and button
-                  Container(
-                    padding: EdgeInsets.all(12.0),
-                    decoration: BoxDecoration(
-                      color: Colors.brown,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Service Name and Description
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Important: Call for immediate service!',
+                          serviceName,
                           style: TextStyle(
-                            color: Colors.white,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            color: Colors.brown[900],
                           ),
                         ),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            // Handle call action
-                          },
-                          icon: Icon(Icons.phone, color: Colors.white),
-                          label: Text('Call Now'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Colors.brown[800], // Set to a darker brown
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                        const SizedBox(height: 5),
+                        Text(
+                          description,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.brown[600],
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(width: 10), // Space between text and button
+                  // Call Now Button in a Soft Container
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.brown[50], // Light brown background
+                      borderRadius:
+                          BorderRadius.circular(12), // Soft rounded corners
+                      border: Border.all(
+                        color: Colors.brown[300]!, // Subtle border color
+                        width: 1,
+                      ),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    child: TextButton.icon(
+                      onPressed: onCallNow, // Handle call action by navigating to ContactPage
+                      icon: const Icon(Icons.phone, color: Colors.brown),
+                      label: const Text('Call Now'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.brown[900], // Brown text color
+                      ),
                     ),
                   ),
                 ],

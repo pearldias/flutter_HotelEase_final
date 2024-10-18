@@ -4,9 +4,44 @@ import 'login.dart'; // Import the LoginScreen
 import 'aboutus.dart'; // Import the AboutUs screen
 import 'gallery.dart'; // Import the GalleryPage
 import 'amenities.dart'; // Import the AmenitiesPage
+import 'contact.dart'; // Import the ContactPage
+import 'map.dart'; // Import the HotelAddPage
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
+
+  @override
+  _MenuScreenState createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  List<String> menuOptions = [
+    'Home',
+    'About Us',
+    'Gallery',
+    'Amenities',
+    'Location', // Added Location option
+    'Profile',
+    'Logout',
+    'Contact Us',
+  ];
+  List<String> filteredOptions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredOptions = menuOptions; // Initialize filteredOptions with all options
+  }
+
+  void _filterOptions(String query) {
+    setState(() {
+      filteredOptions = menuOptions
+          .where((option) => option.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,8 +51,7 @@ class MenuScreen extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/bg.jpg'), // Ensure the asset path is correct
+                image: AssetImage('assets/bg.jpg'), // Ensure the asset path is correct
                 fit: BoxFit.cover,
               ),
             ),
@@ -26,7 +60,7 @@ class MenuScreen extends StatelessWidget {
           SingleChildScrollView(
             child: Column(
               children: [
-                // Search bar similar to customer screen
+                // Search bar
                 Padding(
                   padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
                   child: Container(
@@ -43,11 +77,13 @@ class MenuScreen extends StatelessWidget {
                       ],
                     ),
                     child: Row(
-                      children: const [
+                      children: [
                         Icon(Icons.search, color: Colors.brown),
                         SizedBox(width: 10),
                         Expanded(
                           child: TextField(
+                            controller: _searchController,
+                            onChanged: _filterOptions, // Call filter on change
                             decoration: InputDecoration(
                               hintText: 'Search in Menu...',
                               border: InputBorder.none,
@@ -64,19 +100,10 @@ class MenuScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 16, top: 20),
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start, // Aligning to the left
-                    children: [
-                      _buildMenuButton(context, 'Home'),
-                      _buildMenuButton(
-                          context, 'About Us'), // "About Us" button
-                      _buildMenuButton(context, 'Gallery'),
-                      _buildMenuButton(context, 'Amenities'),
-                      _buildMenuButton(context, 'Profile'),
-                      _buildMenuButton(context, 'Logout'), // Logout button
-                      _buildMenuButton(
-                          context, 'Contact Us'), // Added "Contact Us"
-                    ],
+                    crossAxisAlignment: CrossAxisAlignment.start, // Aligning to the left
+                    children: filteredOptions.map((option) {
+                      return _buildMenuButton(context, option);
+                    }).toList(),
                   ),
                 ),
               ],
@@ -98,8 +125,7 @@ class MenuScreen extends StatelessWidget {
           height: 40,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white.withOpacity(
-                  0.8), // Use `backgroundColor` instead of `primary`
+              backgroundColor: Colors.white, // Set to solid color (no transparency)
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -111,48 +137,62 @@ class MenuScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          UserProfile()), // Navigate to UserProfile screen
+                    builder: (context) => UserProfile(), // Navigate to UserProfile screen
+                  ),
                 );
               } else if (title == 'Logout') {
                 // Navigate to the LoginScreen when Logout is pressed
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          LoginScreen()), // Navigate to login screen
+                    builder: (context) => LoginScreen(), // Navigate to login screen
+                  ),
                 );
               } else if (title == 'About Us') {
                 // Navigate to the AboutUs screen
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          AboutUs()), // Navigate to AboutUs screen
+                    builder: (context) => AboutUs(), // Navigate to AboutUs screen
+                  ),
                 );
               } else if (title == 'Gallery') {
                 // Navigate to the GalleryPage
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          GalleryPage()), // Navigate to GalleryPage
+                    builder: (context) => GalleryPage(), // Navigate to GalleryPage
+                  ),
                 );
               } else if (title == 'Amenities') {
                 // Navigate to the AmenitiesPage screen
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          AmenitiesPage()), // Navigate to AmenitiesPage
+                    builder: (context) => AmenitiesPage(), // Navigate to AmenitiesPage
+                  ),
+                );
+              } else if (title == 'Location') {
+                // Navigate to the LocationPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HotelAddPage(), // Navigate to map.dart
+                  ),
                 );
               } else if (title == 'Contact Us') {
-                // Navigate to Contact Us or perform some action
+                // Navigate to ContactPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContactPage(), // Navigate to ContactPage
+                  ),
+                );
               }
             },
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,
               ),

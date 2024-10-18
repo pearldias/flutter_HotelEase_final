@@ -11,18 +11,13 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore =
-      FirebaseFirestore.instance; // Firestore instance
-
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance; // Firestore instance
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  final TextEditingController _phoneController =
-      TextEditingController(); // New phone controller
-  final TextEditingController _addressController =
-      TextEditingController(); // New address controller
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController(); // New phone controller
+  final TextEditingController _addressController = TextEditingController(); // New address controller
 
   Future<void> _signUp() async {
     if (_passwordController.text != _confirmPasswordController.text) {
@@ -31,28 +26,22 @@ class _SignupPageState extends State<SignupPage> {
       );
       return;
     }
-
     try {
       // Create the user with Firebase Auth
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
       print('Signup successful: ${userCredential.user?.email}');
-
+      
       // Save user information to Firestore, using email as the document ID
       await _firestore.collection('Users').doc(_emailController.text).set({
         'email': _emailController.text,
         'username': _usernameController.text,
-        'phone': _phoneController.text.isEmpty
-            ? ''
-            : _phoneController.text, // Save as blank string if empty
-        'address': _addressController.text.isEmpty
-            ? ''
-            : _addressController.text, // Save as blank string if empty
+        'phone': _phoneController.text.isEmpty ? '' : _phoneController.text, // Save as blank string if empty
+        'address': _addressController.text.isEmpty ? '' : _addressController.text, // Save as blank string if empty
       });
-
+      
       // Navigate to CustomerHomePage after successful signup
       Navigator.pushReplacementNamed(context, '/customer_home');
     } on FirebaseAuthException catch (e) {
@@ -71,16 +60,6 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, '/custlogin');
-          },
-        ),
-        title: const Text('Sign Up'),
-        backgroundColor: Colors.brown,
-      ),
       body: Stack(
         children: [
           Container(
@@ -131,14 +110,12 @@ class _SignupPageState extends State<SignupPage> {
                     const SizedBox(height: 16.0),
                     TextField(
                       controller: _phoneController,
-                      decoration: const InputDecoration(
-                          labelText: 'Phone Number'), // New phone field
+                      decoration: const InputDecoration(labelText: 'Phone Number'), // New phone field
                     ),
                     const SizedBox(height: 16.0),
                     TextField(
                       controller: _addressController,
-                      decoration: const InputDecoration(
-                          labelText: 'Address'), // New address field
+                      decoration: const InputDecoration(labelText: 'Address'), // New address field
                     ),
                     const SizedBox(height: 16.0),
                     TextField(
@@ -150,15 +127,13 @@ class _SignupPageState extends State<SignupPage> {
                     TextField(
                       controller: _confirmPasswordController,
                       obscureText: true,
-                      decoration:
-                          const InputDecoration(labelText: 'Confirm Password'),
+                      decoration: const InputDecoration(labelText: 'Confirm Password'),
                     ),
                     const SizedBox(height: 16.0),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.brown,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -175,8 +150,7 @@ class _SignupPageState extends State<SignupPage> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/custlogin');
+                            Navigator.pushReplacementNamed(context, '/custlogin');
                           },
                           child: const Text(
                             'Login',

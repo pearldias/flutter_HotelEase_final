@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,6 +10,27 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Logo image at the top, centered
+              ClipOval(
+                child: Image.asset(
+                  'assets/logo.jpg',
+                  height: 100, // Set height for the logo image
+                  width: 100, // Set width for the logo image
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(height: 10.0), // Reduced space between logo and title
+              // Title above the first row of images
+              Text(
+                'HOTELEASE',
+                style: TextStyle(
+                  fontSize: 24.0, // Font size for the title
+                  fontWeight: FontWeight.bold, // Bold font
+                  color: Colors.white, // White text color
+                ),
+                textAlign: TextAlign.center, // Center the text
+              ),
+              SizedBox(height: 57.0), // 1.5 cm gap between title and images
               // Row 1: Three images
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -23,9 +42,7 @@ class HomePage extends StatelessWidget {
                   buildImage('assets/3.jpg'),
                 ],
               ),
-
               SizedBox(height: 8.0), // Space between rows
-
               // Row 2: Three images
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -37,9 +54,7 @@ class HomePage extends StatelessWidget {
                   buildImage('assets/6.jpg'),
                 ],
               ),
-
               SizedBox(height: 8.0), // Space between rows
-
               // Row 3: Single image
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -47,9 +62,7 @@ class HomePage extends StatelessWidget {
                   buildImage('assets/7.jpg'), // Center large image
                 ],
               ),
-
               SizedBox(height: 20.0), // Space between images and text
-
               // Text below the images
               Text(
                 '”Continue to find the perfect room for your stay!”',
@@ -61,7 +74,6 @@ class HomePage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20.0), // Space between text and button
-
               // Continue button
               ElevatedButton(
                 onPressed: () {
@@ -100,7 +112,6 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
   // Helper method to build images with curved corners
   Widget buildImage(String assetPath, {bool large = false}) {
     return ClipRRect(
@@ -114,47 +125,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-/*
-import 'package:flutter/material.dart';
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Hotel Management System"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
-              },
-              child: const Text("Employee Login"),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/signup');
-              },
-              child: const Text("Signup"),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/resetpass');
-              },
-              child: const Text("Reset Password"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-*/

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'dashboard.dart'; // Update this to the correct import path
+
 class EmployeeFeedbackPage extends StatefulWidget {
   const EmployeeFeedbackPage({super.key});
+
   @override
   _EmployeeFeedbackPageState createState() => _EmployeeFeedbackPageState();
 }
+
 class _EmployeeFeedbackPageState extends State<EmployeeFeedbackPage>
     with SingleTickerProviderStateMixin {
   int selectedStars = 0;
   TextEditingController feedbackController = TextEditingController();
   bool submitted = false;
   bool isAnonymous = false;
+
   // Tags for employee feedback categories
   List<String> tags = [
     "Work Environment",
@@ -21,9 +26,11 @@ class _EmployeeFeedbackPageState extends State<EmployeeFeedbackPage>
     "Team Collaboration",
     "Compensation"
   ];
+
   List<String> selectedTags = [];
   AnimationController? _controller;
   Animation<double>? _animation;
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +45,7 @@ class _EmployeeFeedbackPageState extends State<EmployeeFeedbackPage>
     // Ensure stars are available immediately
     _controller?.forward();
   }
+
   // Animation triggers on star tap, and stars are visible immediately
   Widget buildStar(int index) {
     return GestureDetector(
@@ -58,6 +66,7 @@ class _EmployeeFeedbackPageState extends State<EmployeeFeedbackPage>
       ),
     );
   }
+
   Widget buildTag(String tag) {
     return FilterChip(
       label: Text(tag),
@@ -78,6 +87,7 @@ class _EmployeeFeedbackPageState extends State<EmployeeFeedbackPage>
       ),
     );
   }
+
   void submitFeedback() {
     setState(() {
       submitted = true;
@@ -99,36 +109,36 @@ class _EmployeeFeedbackPageState extends State<EmployeeFeedbackPage>
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.brown[800], // Darker brown background
-      appBar: AppBar(
-        backgroundColor: Colors.brown[700], // Dark brown AppBar
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text(
-          'Employee Feedback',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
       body: Stack(
         children: [
+          // Back button at the top left corner
+          Positioned(
+            top: 16,
+            left: 16,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => DashboardPage()),
+                ); // Navigate to DashboardPage
+              },
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // Gap of 2 cm before starting the content
+                  const SizedBox(height: 40), // Approximately 2 cm
+
                   // Entire Review section wrapped in a container
                   Container(
                     padding: const EdgeInsets.all(16),

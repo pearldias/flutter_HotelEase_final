@@ -22,14 +22,12 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
     setState(() {
       _isLoading = true;
     });
-
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
       print('Login successful: ${userCredential.user?.email}');
-
       // Navigate to CustomerHomePage after successful login
       Navigator.pushReplacementNamed(context, '/customer_home');
     } on FirebaseAuthException catch (e) {
@@ -54,10 +52,6 @@ class _CustLoginScreenState extends State<CustLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Customer Login'),
-        backgroundColor: Colors.brown,
-      ),
       body: Stack(
         children: [
           Container(

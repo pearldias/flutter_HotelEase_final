@@ -25,6 +25,9 @@ class DashboardPage extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Add space before the header to shift it down
+              SizedBox(height: 40), // Adjust this height as needed
+
               // Header with logo and app name (Removed the back button)
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -65,6 +68,7 @@ class DashboardPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20), // Reduced spacing
+              
               // Centered menu section with cards
               Expanded(
                 child: Align(
@@ -86,7 +90,7 @@ class DashboardPage extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min, // Adjust to content height
                       children: [
-                        buildMenuButton('assets/pss.jpg', 'Profile Settings', context, () {
+                        buildMenuButton('assets/userbrown.jpg', 'Profile Settings', context, () {
                           // Navigate to ProfileScreen
                           Navigator.push(
                             context,

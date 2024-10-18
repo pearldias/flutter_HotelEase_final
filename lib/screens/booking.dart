@@ -105,7 +105,6 @@ class _BookingFormState extends State<BookingForm> {
         'adults': _adults,
         'children': _children,
         'special_request': _specialRequestController.text,
-        //'special_request': _specialRequestController.text,
         'room_number': _assignedRoomNumber, // Store the assigned room number
       };
 
@@ -162,7 +161,7 @@ class _BookingFormState extends State<BookingForm> {
     try {
       // Call the StripeService to handle the payment
       await StripeService.instance
-          .makePayment(100, "inr", context); // Example amount in USD
+          .makePayment(100, "inr", context); // Example amount in INR
 
       Navigator.pushReplacement(
         context,
@@ -214,7 +213,7 @@ class _BookingFormState extends State<BookingForm> {
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('Book A Room'),
+        // title: Text('Book A Room'), // Removed title
         centerTitle: true,
       ),
       body: Container(
@@ -294,14 +293,11 @@ class _BookingFormState extends State<BookingForm> {
                         });
                       },
                     ),
-                    // Special Request Field
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 16),
                     TextFormField(
                       controller: _specialRequestController,
                       decoration: const InputDecoration(
-                        labelText: 'Special Request',
+                        labelText: 'Special Requests',
                         filled: true,
                         fillColor: Colors.transparent,
                         labelStyle: TextStyle(color: Colors.black),
@@ -315,12 +311,12 @@ class _BookingFormState extends State<BookingForm> {
                     ),
                     SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: _saveBookingToFirestore,
-                      child: Text('Book Now'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF8C6239), // Brown color
-                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromARGB(255, 66, 36, 7), // Dark brown background color
+                        foregroundColor: const Color.fromARGB(255, 241, 238, 237), // Set text color to brown
                       ),
+                      onPressed: _saveBookingToFirestore,
+                      child: const Text('Book Now'),
                     ),
                   ],
                 ),
@@ -332,130 +328,77 @@ class _BookingFormState extends State<BookingForm> {
     );
   }
 
-  // Helper methods to build UI fields (omitted for brevity)
-  Widget buildDateField(
-      BuildContext context, String labelText, DateTime? date, bool isCheckIn) {
-    return InkWell(
+  Widget buildDateField(BuildContext context, String label, DateTime? date,
+      bool isCheckIn) {
+    return TextFormField(
+      readOnly: true,
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Colors.transparent,
+        labelStyle: const TextStyle(color: Colors.black),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+        ),
+      ),
       onTap: () => _selectDate(context, isCheckIn),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: labelText,
-          border: OutlineInputBorder(),
-        ),
-        child: Text(
-          date == null ? 'Select date' : DateFormat('yyyy-MM-dd').format(date),
-        ),
+      controller: TextEditingController(
+        text: date != null ? DateFormat.yMd().format(date) : '',
       ),
     );
   }
 
   Widget buildTimeField(
-      BuildContext context, String labelText, TimeOfDay? time, bool isCheckIn) {
-    return InkWell(
+      BuildContext context, String label, TimeOfDay? time, bool isCheckIn) {
+    return TextFormField(
+      readOnly: true,
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Colors.transparent,
+        labelStyle: const TextStyle(color: Colors.black),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+        ),
+      ),
       onTap: () => _selectTime(context, isCheckIn),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: labelText,
-          border: OutlineInputBorder(),
-        ),
-        child: Text(
-          time == null ? 'Select time' : time.format(context),
-        ),
+      controller: TextEditingController(
+        text: time != null ? time.format(context) : '',
       ),
     );
   }
 
-  Widget buildCounterField(
-      String label, int count, ValueChanged<int> onChanged) {
-    return Expanded(
-      child: Column(
-        children: [
-          Text(label),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: Icon(Icons.remove),
-                onPressed: () {
-                  if (count > 0) onChanged(count - 1);
-                },
-              ),
-              Text(count.toString()),
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => onChanged(count + 1),
-              ),
-            ],
-          ),
-        ],
-      ),
+  Widget buildCounterField(String label, int value,
+      ValueChanged<int> onChanged) {
+    return Column(
+      children: [
+        Text(label),
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(Icons.remove),
+              onPressed: () {
+                if (value > 0) {
+                  onChanged(value - 1);
+                }
+              },
+            ),
+            Text(value.toString()),
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                onChanged(value + 1);
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
-
-// PaymentSuccessPage to display after successful payment
-// class PaymentSuccessPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Payment Success'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Icon(Icons.check_circle_outline, color: Colors.green, size: 100),
-//             SizedBox(height: 20),
-//             Text(
-//               'Your payment was successful!',
-//               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//             ),
-//             SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(); // Return to previous screen
-//               },
-//               child: Text('Continue'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-// PaymentSuccessPage to display after successful payment
-// class PaymentSuccessPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Payment Success'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Icon(Icons.check_circle_outline, color: Colors.green, size: 100),
-//             SizedBox(height: 20),
-//             Text(
-//               'Your payment was successful!',
-//               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//             ),
-//             SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () {
-//                 // Navigate to SuccessScreen after payment success
-//                 Navigator.pushReplacement(
-//                   context,
-//                   MaterialPageRoute(builder: (context) => SuccessScreen()),
-//                 );
-//               },
-//               child: Text('Continue'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-  // }
-// }

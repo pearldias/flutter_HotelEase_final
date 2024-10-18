@@ -132,6 +132,12 @@ class _UserProfileState extends State<UserProfile> {
             ),
           ],
         ),
+        centerTitle: true, // Ensure title is centered
+        actions: [
+          Container(
+            width: 50, // Create a dummy action to balance the title
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

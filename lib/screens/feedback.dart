@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'success.dart'; // Import the success screen
-import 'package:app/screens/success.dart';  // Adjust if needed
 
 class FeedbackScreen extends StatefulWidget {
   @override
@@ -11,19 +9,30 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   int _rating = 0;
   TextEditingController _reviewController = TextEditingController();
 
+  // Method to show the alert dialog
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Feedback Submitted'),
+          content: Text('Thank you for your feedback!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF8C6239), // Brown color for the app bar
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text('FEEDBACK'),
-        centerTitle: true,
-      ),
       body: Stack( // Use Stack to overlay the background image and content
         children: [
           // Background image
@@ -36,12 +45,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ),
           ),
           // Light beige box
-          // Main content
           Padding(
             padding: const EdgeInsets.fromLTRB(8.0, 24.0, 8.0, 24.0), // Set left, top, right, bottom padding
             child: Container(
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 204, 146, 75).withOpacity(0.9), //beige box
+                color: const Color.fromARGB(255, 204, 146, 75).withOpacity(0.9), // Beige box
                 borderRadius: BorderRadius.circular(12.0), // Rounded corners for the box
               ),
               child: Padding(
@@ -105,11 +113,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     // Submit button
                     ElevatedButton(
                       onPressed: () {
-                        // Navigate to the SuccessScreen after submission
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SuccessScreen()),
-                        );
+                        // Show the confirmation dialog instead of navigating
+                        _showConfirmationDialog();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF8C6239),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 class CustomerScreen extends StatelessWidget {
   const CustomerScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +57,7 @@ class CustomerScreen extends StatelessWidget {
                               enabled: false, // Disable text input, as it's just for navigation
                             ),
                           ),
-                          Icon(Icons.person, color: Colors.brown),
+                          Icon(Icons.menu, color: Colors.brown), // Hamburger icon
                         ],
                       ),
                     ),
@@ -171,7 +169,7 @@ class CustomerScreen extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 15,
-                              backgroundImage: AssetImage('assets/user.jpg'),
+                              backgroundImage: AssetImage('assets/userbrown.jpg'),
                             ),
                             const SizedBox(width: 8),
                             Column(
@@ -207,6 +205,7 @@ class CustomerScreen extends StatelessWidget {
       ),
     );
   }
+
   // Helper widget to build each category card
   Widget _buildCategoryCard(String title, String imagePath, void Function() onTap) {
     return GestureDetector(

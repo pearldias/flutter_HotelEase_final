@@ -6,142 +6,166 @@ class AmenitiesPage extends StatefulWidget {
 }
 
 class _AmenitiesPageState extends State<AmenitiesPage> {
-  PageController _pageController = PageController(viewportFraction: 0.8);
-  int _currentIndex = 0;
-
-  // List of amenities with image paths and names
-  final List<Map<String, String>> amenities = [
-    {"image": "assets/spa.jpg", "name": "Spa"},
-    {"image": "assets/hk.png", "name": "Housekeeping"},
-    {"image": "assets/gym1.jpg", "name": "Gym"},
-    {"image": "assets/sp.jpg", "name": "Swimming Pool"},
-    {"image": "assets/cp.jpg", "name": "Car Parking"},
+  List<Map<String, String>> amenities = [
+    {"image": "assets/spa.jpg", "name": "Spa", "description": "Relax and unwind in our luxurious spa with a variety of treatments."},
+    {"image": "assets/hk.png", "name": "Housekeeping", "description": "Our housekeeping team ensures your room is spotless every day."},
+    {"image": "assets/gym1.jpg", "name": "Gym", "description": "Stay fit and healthy in our well-equipped gym."},
+    {"image": "assets/sp.jpg", "name": "Swimming Pool", "description": "Take a refreshing dip in our beautiful swimming pool."},
+    {"image": "assets/cp.jpg", "name": "Car Parking", "description": "We offer secure car parking facilities for our guests."},
+    {"image": "assets/pet.jpg", "name": "Pet-friendly", "description": "Bring your pets along, we have dedicated facilities for them."},
+    {"image": "assets/meetings.jpg", "name": "Meetings", "description": "Host your meetings in our well-appointed conference rooms."},
+    {"image": "assets/car.jpg", "name": "Luxury Transport", "description": "Enjoy luxury transport services during your stay."},
+    {"image": "assets/bar.jpg", "name": "Restaurant & Bar", "description": "Savor exquisite dining and drinks at our restaurant and bar."},
+    {"image": "assets/airport.jpg", "name": "Airport Shuttle", "description": "Convenient airport shuttle services for our guests."},
   ];
+  
+  String _searchText = '';
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController.addListener(() {
-      setState(() {
-        _currentIndex = _pageController.page!.round();
-      });
-    });
-  }
-
-  void _goToNextPage() {
-    if (_currentIndex < amenities.length - 1) {
-      _pageController.animateToPage(
-        _currentIndex + 1,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-    }
-  }
-
-  void _goToPreviousPage() {
-    if (_currentIndex > 0) {
-      _pageController.animateToPage(
-        _currentIndex - 1,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-    }
+  void _showAmenityDetails(String name, String description) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          padding: EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.brown[50],
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                name,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.brown[800]),
+              ),
+              SizedBox(height: 16),
+              Text(
+                description,
+                style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Close", style: TextStyle(color: Colors.black)), // Text color set to black
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.brown[600], // Background color set to brown
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, String>> filteredAmenities = amenities.where((amenity) {
+      return amenity["name"]!.toLowerCase().contains(_searchText.toLowerCase());
+    }).toList();
+
     return Scaffold(
       backgroundColor: Colors.brown[50],
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Row for the back arrow and heading
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.brown),
-                    onPressed: () {
-                      Navigator.pop(context); // Navigate back to the previous screen
-                    },
-                  ),
-                  SizedBox(width: 10), // Add spacing between arrow and text
-                  Text(
-                    'Amenities',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.brown,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Stack(
-                children: [
-                  // Image slider using PageView
-                  PageView.builder(
-                    controller: _pageController,
-                    itemCount: amenities.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0), // Space between images
-                        child: Transform.scale(
-                          scale: index == _currentIndex ? 1 : 0.9, // Scaling effect for focused image
-                          child: Center(
-                            child: Image.asset(
-                              amenities[index]["image"]!,
-                              height: 300, // Reduced height for images
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  // Previous Button
-                  Positioned(
-                    left: 0,
-                    top: MediaQuery.of(context).size.height * 0.35, // Vertically center the button
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back_ios, color: Colors.brown, size: 40),
-                      onPressed: _goToPreviousPage,
-                    ),
-                  ),
-                  // Next Button
-                  Positioned(
-                    right: 0,
-                    top: MediaQuery.of(context).size.height * 0.35, // Vertically center the button
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_forward_ios, color: Colors.brown, size: 40),
-                      onPressed: _goToNextPage,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            // Brown rectangle container with amenity name
-            Container(
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.brown,
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Text(
-                amenities[_currentIndex]["name"]!, // Displaying only the current amenity
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
+      appBar: AppBar(
+        backgroundColor: Colors.brown,
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to previous screen
+          },
+        ),
+      ),
+      body: Column(
+        children: [
+          // Search Bar
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  _searchText = value;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: "Search amenities...",
+                prefixIcon: Icon(Icons.search, color: Colors.brown),
+                filled: true,
+                fillColor: Colors.brown[100],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),
-            SizedBox(height: 20),
-          ],
-        ),
+          ),
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(16.0),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Two items per row
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 0.75, // Control the aspect ratio of each grid item
+              ),
+              itemCount: filteredAmenities.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    _showAmenityDetails(
+                      filteredAmenities[index]["name"]!,
+                      filteredAmenities[index]["description"]!,
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 8,
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: Image.asset(
+                              filteredAmenities[index]["image"]!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Container(
+                            color: Colors.brown,
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              filteredAmenities[index]["name"]!,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

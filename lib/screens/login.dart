@@ -1,217 +1,240 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Image.asset(
-                  'assets/signin.jpg', // Correct path to the image
-                  height: 400.0,
-                ),
-              ),
-              SizedBox(height: 20.0),
-              Text(
-                'Welcome!',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 10.0),
-              Text(
-                'How would you like to login?',
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 30.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      ClipOval(
-                        child: Image.asset(
-                          'assets/cust.jpg',
-                          height: 80.0,
-                          width: 80.0,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.brown[700]!, Colors.brown[400]!],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context,
-                                '/custlogin'); // Navigate to custlogin.dart
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors
-                                .transparent, // Make the button transparent
-                            shadowColor:
-                                Colors.transparent, // Remove button shadow
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 24.0, vertical: 12.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          child: Text(
-                            'I am a Customer',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Container(
-                        width: 140.0,
-                        child: Text(
-                          'Access your bookings, reservations, and more',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 40.0),
-                  Column(
-                    children: [
-                      ClipOval(
-                        child: Image.asset(
-                          'assets/emp.jpg',
-                          height: 80.0,
-                          width: 80.0,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.brown[700]!, Colors.brown[400]!],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context,
-                                '/emplogin'); // Navigate to employee login page
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors
-                                .transparent, // Make the button transparent
-                            shadowColor:
-                                Colors.transparent, // Remove button shadow
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 24.0, vertical: 12.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          child: Text(
-                            'I am an Employee',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Container(
-                        width: 140.0,
-                        child: Text(
-                          'View schedules and more',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
+      body: Stack(
+        children: [
+          // Background with subtle gradient
+          Container(
+            decoration: const BoxDecoration(
+              gradient: RadialGradient(
+                colors: [
+                  Color(0xFFD2B48C),
+                  Color(0xFFEDE3D2),
                 ],
+                center: Alignment(-0.8, -0.8),
+                radius: 1.6,
               ),
-              SizedBox(height: 40.0),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context,
-                      '/customer_home'); // Navigate to customer_home_page.dart
-                },
-                child: Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  decoration: BoxDecoration(
-                    color: Colors.brown,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 8.0),
-                      Text(
-                        'Login as a Guest',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: FaIcon(FontAwesomeIcons.instagram),
-                    color: Colors.purple,
-                    onPressed: () {
-                      // Handle Instagram press
-                    },
-                  ),
-                  SizedBox(width: 20.0),
-                  IconButton(
-                    icon: FaIcon(FontAwesomeIcons.envelope),
-                    color: Colors.red,
-                    onPressed: () {
-                      // Handle Gmail press
-                    },
-                  ),
-                  SizedBox(width: 20.0),
-                  IconButton(
-                    icon: FaIcon(FontAwesomeIcons.twitter),
-                    color: Colors.blue,
-                    onPressed: () {
-                      // Handle Twitter press
-                    },
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
-        ),
+          // Main Content
+          Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 50.0, horizontal: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Simplified Logo without glow effect
+                    Container(
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/logo.jpg',
+                          height: 130.0,
+                          width: 130.0,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 25.0),
+
+                    // Professional welcome text
+                    Text(
+                      'Welcome to HotelEase',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
+                          ?.copyWith(
+                            fontSize: 28.0, // Slightly smaller font for sleekness
+                            fontWeight: FontWeight.w600,
+                            color: Colors.brown[900],
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10.0),
+
+                    // Refined slogan without italic style
+                    Text(
+                      'Luxury & Comfort Awaits',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Colors.brown[700],
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18.0, // Reduced for a more modern look
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 50.0),
+
+                    // Login options with simplified design
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildLoginOption(
+                          context,
+                          'assets/cust.jpg',
+                          'I am a Customer',
+                          'Bookings & more',
+                          () {
+                            Navigator.pushNamed(context, '/custlogin');
+                          },
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: VerticalDivider(
+                            width: 1.5,
+                            color: Colors.brown[300],
+                            thickness: 1.5,
+                          ),
+                        ),
+                        _buildLoginOption(
+                          context,
+                          'assets/emp.jpg',
+                          'I am an Employee',
+                          'Schedules & tasks',
+                          () {
+                            Navigator.pushNamed(context, '/emplogin');
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 50.0),
+
+                    // Custom Divider with subtle styling
+                    Divider(
+                      color: Colors.brown[400],
+                      thickness: 1.5,
+                      endIndent: 20,
+                      indent: 20,
+                    ),
+                    const SizedBox(height: 30.0),
+
+                    // Guest login button with professional design
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/customer_home');
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 14.0, horizontal: 32.0),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.brown[600]!,
+                              Colors.brown[400]!,
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6.0,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.person_outline,
+                                color: Colors.white),
+                            const SizedBox(width: 10.0),
+                            Text(
+                              'Continue as Guest',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Professional login option with refined design (No icons)
+  Widget _buildLoginOption(BuildContext context, String imagePath,
+      String title, String description, VoidCallback onTap,
+      {double size = 120.0}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(4.0),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.brown[300], // Lighter shade for a subtle look
+            ),
+            child: ClipOval(
+              child: Image.asset(
+                imagePath,
+                height: 90.0,
+                width: 90.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12.0),
+          Text(
+            title,
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.brown[900],
+                ),
+          ),
+          const SizedBox(height: 6.0),
+          SizedBox(
+            width: size,
+            child: Text(
+              description,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(
+                    color: Colors.brown[700],
+                    fontSize: 14.0,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 10.0),
+          ElevatedButton(
+            onPressed: onTap,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.brown[600],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            child: const Text(
+              'Login',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }

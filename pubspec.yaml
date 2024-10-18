@@ -42,7 +42,9 @@ dependencies:
   carousel_slider: ^5.0.0
   flutter_stripe: ^11.2.0
   dio: ^5.7.0
-
+  google_fonts: ^4.0.3
+  google_maps_flutter: ^2.9.0
+  flutter_polyline_points: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +56,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  url_launcher: ^6.1.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -88,15 +91,10 @@ flutter:
     - assets/booking_payment.jpg
     - assets/service.jpg
     - assets/feedback.jpg
-    - assets/user.jpg
     - assets/user_bg.jpg
     - assets/bg.jpg
     - assets/background_image.jpg
     - assets/profile_image.jpg
-    - assets/about1.jpg
-    - assets/about2.jpg
-    - assets/about3.jpg
-    - assets/about4.jpg
     - assets/wed2.jpg
     - assets/wed3.jpg
     - assets/wed4.jpg
@@ -128,7 +126,6 @@ flutter:
     - assets/menubg.jpg
     - assets/userbrown.jpg
     - assets/ebg.jpg
-    - assets/pss.jpg
     - assets/shifts.png
     - assets/f.png
     - assets/d1.jpg
@@ -137,3 +134,30 @@ flutter:
     - assets/ds3.jpg
     - assets/ds2.jpg
     - assets/ds1.jpg
+    - assets/pet.jpg
+    - assets/meetings.jpg
+    - assets/car.jpg
+    - assets/bar.jpg
+    - assets/airport.jpg
+    - assets/a33.jpg
+    - assets/a44.jpg
+    - assets/a3.jpg
+    - assets/a22.jpg
+    - assets/a11.jpg
+    - assets/a55.jpg
+    - assets/g.jpg
+    - assets/g1.jpg
+    - assets/g2.jpg
+    - assets/g3.jpg
+    - assets/g4.jpg
+    - assets/g5.jpg
+    - assets/g6.jpg
+    - assets/g7.jpg
+    - assets/g8.jpg
+    - assets/add.jpg
+    - assets/m1.jpg
+    - assets/m2.jpg
+    - assets/m3.jpg
+    - assets/m4.jpg
+    - assets/m5.jpg
+    - assets/m6.jpg
